@@ -1,0 +1,68 @@
+.btnsMudiContainer {
+    position: absolute;
+    width: max-content;
+    height: max-content;
+    right: 0%
+}
+
+.btnMudi3D {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.btnMudi3D:hover {
+    transform: scale(1.1);
+    transition: all .2s ease-in-out;
+}
+
+.tooltipMudi {
+    background-color: #1a4ea2;
+    color: white;
+    font-family: sans-serif;
+    width: 300px;
+    font-size: 14px;
+    padding: 9px 13px;
+    border-radius: 15px;
+    text-align: center;
+    position: absolute;
+    top: -65%;
+    right: 0%;
+}
+
+.tooltipMudi::after {
+    content: "_";
+    background-color: red;
+    position: absolute;
+    bottom: -15%;
+    width: 20px;
+    border-bottom-right-radius: 50px;
+    background-color: #1a4ea2;
+    color: transparent
+}
+
+.mudiModal {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.416);
+    z-index: 10000000;
+    backdrop-filter: blur(5px);
+}
+
+.iframeMudi3D {
+    background-color: white;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 85%;
+}
