@@ -161,13 +161,8 @@ class MudiExperience{
     };
 
 };
-
 const mudiExperience = new MudiExperience();
-mudiExperience.experienceOn(77018588107143,document.body.querySelector('#deployMundi'))
 
-setTimeout(()=>{
-    mudiExperience.experienceOn(77018588101179,document.body.querySelector('#deployMundi'))
-},5000)
 
 
 
