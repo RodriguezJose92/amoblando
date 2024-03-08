@@ -201,7 +201,7 @@ class MudiExperience{
             if(window.innerWidth>1000){
                 !flagAR 
                 ? (
-                    document.body.querySelector('.containerQRMudi').style.right="inherit",
+                    document.body.querySelector('.containerQRMudi').style.right="15%",
                     changeStyleBtnAR(flagAR,this.color),
                     flagAR = !flagAR
                 )
