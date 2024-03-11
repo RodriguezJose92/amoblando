@@ -110,11 +110,11 @@
     display: flex;
     position: absolute;
     top: 5%;
-    right: -1%;
+    right: 1%;
 }
 
 .cls-1_modal {
-    width: 350px;
+    width: 305px;
 }
 
 .imgBtnAR {
