@@ -13,7 +13,7 @@
     z-index:10;
 }
 
-.btnMudi3D {
+.img3DBtn {
     width: 100px;
     height: 100px;
     position: relative;
@@ -23,7 +23,7 @@
 
 }
 
-.btnMudi3D:hover {
+.img3DBtn:hover {
     transform: scale(.9);
     transition: all .2s ease-in-out;
 }
