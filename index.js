@@ -269,6 +269,11 @@ class MudiExperience{
 
         /** Create Buttons */
         this.createBtns();
+
+         dataLayer.push({
+                event: "visualizacion_botones",
+                valorMudi: "1"
+        });  
     };
 
 };
