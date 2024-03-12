@@ -263,7 +263,7 @@ class MudiExperience{
         window.dataLayer && dataLayer.push({
             event: `Evento de interacción ${eventName} `,
             valorMudi: 1,
-            sku: sku,
+            sku: this.skuNumber,
             category:document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML || 'null',
             subCategory: document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML || ' null',
             sistemaOperativo: OSdevice
@@ -300,7 +300,10 @@ class MudiExperience{
         ? false 
         : dataLayer.push({
             event: "visualizacion_botones",
-            valorMudi: "1"
+            valorMudi: "1",
+            sku: this.skuNumber,
+            category: document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML || 'null',
+            subCategory: document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML || ' null'
         });  
     };
 
