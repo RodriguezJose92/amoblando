@@ -307,6 +307,13 @@ class MudiExperience{
             category: document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML || 'null',
             subCategory: document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML || ' null'
         });  
+
+        setTimeout(()=>{
+            document.body.querySelector('.cart-add').addEventListener('click',()=>{
+                this.sendEventInteraction('ADD TO CAR');
+            })
+        },2000)
+
     };
 
 };
