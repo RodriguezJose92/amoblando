@@ -229,7 +229,7 @@ class MudiExperience{
                 document.body.querySelector('.cls-1_modal').style.fill=color,
                 icon.forEach((icon)=>icon.style.fill="white"),
                 document.body.querySelector('.cls-2_modal').style.fill="white",
-                events('AR)
+                events('AR')
             ) 
             : (
                 document.body.querySelector('.cls-1_modal').style.fill="white",
@@ -265,14 +265,14 @@ class MudiExperience{
         else OSdevice = 'DESK';
 
         window.dataLayer && dataLayer.push({
-            event: `Evento de interacción ${eventName} `,
+            event: `Evento de interaccion ${eventName}`,
             valorMudi: 1,
             sku: this.skuNumber,
             category:document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML || 'null',
             subCategory: document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML || ' null',
             sistemaOperativo: OSdevice
         })
-    }
+    };
 
     /** verifyExperience  ✔️ */
     async experienceOn(skuNumber, fatherContainer){
