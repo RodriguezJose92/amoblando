@@ -11,6 +11,7 @@ class MudiExperience{
     async conectServer(skuNumber){
         
         const myBody = {"skus":[skuNumber]};
+        this.skuNumber = skuNumber;
     
         try {
     
