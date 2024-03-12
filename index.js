@@ -106,7 +106,7 @@ class MudiExperience{
     createModal(){
         
         /* Create Events Mudi*/
-        const events = this.sendEventInteraction('AR')
+        const events = this.sendEventInteraction
 
         /** create variables */
         let flagAR = false;
@@ -229,7 +229,7 @@ class MudiExperience{
                 document.body.querySelector('.cls-1_modal').style.fill=color,
                 icon.forEach((icon)=>icon.style.fill="white"),
                 document.body.querySelector('.cls-2_modal').style.fill="white",
-                events()
+                events('AR)
             ) 
             : (
                 document.body.querySelector('.cls-1_modal').style.fill="white",
