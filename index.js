@@ -208,7 +208,8 @@ class MudiExperience{
                 ? (
                     document.body.querySelector('.containerQRMudi').style.right="15%",
                     changeStyleBtnAR(flagAR,this.color),
-                    flagAR = !flagAR
+                    flagAR = !flagAR,
+                    events('AR')
                 )
                 : (
                     document.body.querySelector('.containerQRMudi').style.right="-150%",
@@ -216,7 +217,8 @@ class MudiExperience{
                     flagAR = !flagAR
                 )
             }
-            else window.open(`${this.dataServer.URL_AR}`,"_BLANK")
+            else window.open(`${this.dataServer.URL_AR}`,"_BLANK");
+             events('AR')
         });
 
         /** Verify Style Bttn AR  */
@@ -228,8 +230,7 @@ class MudiExperience{
             ? (
                 document.body.querySelector('.cls-1_modal').style.fill=color,
                 icon.forEach((icon)=>icon.style.fill="white"),
-                document.body.querySelector('.cls-2_modal').style.fill="white",
-                events('AR')
+                document.body.querySelector('.cls-2_modal').style.fill="white"
             ) 
             : (
                 document.body.querySelector('.cls-1_modal').style.fill="white",
