@@ -104,9 +104,6 @@ class MudiExperience{
 
     /** Create Modal ✔️ */
     createModal(){
-        
-        /* Create Events Mudi*/
-        const events = this.sendEventInteraction
 
         /** create variables */
         let flagAR = false;
@@ -209,7 +206,7 @@ class MudiExperience{
                     document.body.querySelector('.containerQRMudi').style.right="15%",
                     changeStyleBtnAR(flagAR,this.color),
                     flagAR = !flagAR,
-                    events('AR')
+                    this.sendEventInteraction('AR')
                 )
                 : (
                     document.body.querySelector('.containerQRMudi').style.right="-150%",
@@ -218,7 +215,7 @@ class MudiExperience{
                 )
             }
             else window.open(`${this.dataServer.URL_AR}`,"_BLANK");
-             events('AR')
+            this.sendEventInteraction('AR')
         });
 
         /** Verify Style Bttn AR  */
