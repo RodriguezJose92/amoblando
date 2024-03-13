@@ -205,7 +205,7 @@ class MudiExperience{
                 ? (
                     document.body.querySelector('.containerQRMudi').style.right="15%",
                     changeStyleBtnAR(flagAR,this.color),
-                    flagAR = !flagAR,
+                    flagAR = !flagAR
                 )
                 : (
                     document.body.querySelector('.containerQRMudi').style.right="-150%",
