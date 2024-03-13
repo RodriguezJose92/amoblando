@@ -206,7 +206,6 @@ class MudiExperience{
                     document.body.querySelector('.containerQRMudi').style.right="15%",
                     changeStyleBtnAR(flagAR,this.color),
                     flagAR = !flagAR,
-                    this.sendEventInteraction('AR')
                 )
                 : (
                     document.body.querySelector('.containerQRMudi').style.right="-150%",
@@ -215,7 +214,7 @@ class MudiExperience{
                 )
             }
             else window.open(`${this.dataServer.URL_AR}`,"_BLANK");
-            this.sendEventInteraction('AR')
+            !flagAR && this.sendEventInteraction('AR')
         });
 
         /** Verify Style Bttn AR  */
