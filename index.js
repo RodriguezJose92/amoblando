@@ -214,7 +214,7 @@ class MudiExperience{
                 )
             }
             else window.open(`${this.dataServer.URL_AR}`,"_BLANK");
-            !flagAR && this.sendEventInteraction('AR')
+            flagAR && this.sendEventInteraction('AR')
         });
 
         /** Verify Style Bttn AR  */
