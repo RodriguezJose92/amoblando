@@ -179,7 +179,7 @@
 }
 
 .textInfoMudi {
-    font-size: 16px;
+    font-size: 13px;
 }
 
 .step1 {
@@ -188,6 +188,10 @@
 
 .stepMudi {
     width: 30px;
+}
+
+.hrTitle{
+    margin-botton:20px
 }
 
 @media screen and (min-width:1400px) and (max-width:1700px) {
