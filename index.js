@@ -298,7 +298,7 @@ class sendData{
 
         /** Doing request */
         try {
-            const request = await fetch('http://localhost:3589/api/mudiv1/sendRegistry',{
+            const request = await fetch('https://viewer.mudi.com.co:3589/api/mudiv1/sendRegistry',{
                 method:'POST',
                 headers:{"Content-type":"application/json"},
                 body:JSON.stringify(body)
