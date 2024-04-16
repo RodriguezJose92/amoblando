@@ -1,3 +1,320 @@
+/** TEST A-B */
+class sendData{  
+
+    constructor(){
+        
+        /** Atributes Change */
+        this.testType           = null;  // ✔️
+        this.viewer             = 0;     
+        this.interaction3D      = 0;
+        this.interactionAR      = 0;
+        this.addToCar           = null;  // ✔️
+        this.timeInSesion       = null;  // ✔️
+
+        /** Get only time */
+        this.idCompany          = 147;
+        this.sku                = null;  // ✔️
+        this.category           = null;  // ✔️
+        this.subCategory        = null;  // ✔️
+        this.pathURL            = null;  // ✔️
+        this.date               = null;  // ✔️
+        this.infodevice         = null;  // ✔️
+        
+    };
+
+    /** Consult last type test ✔️ */
+    async consultTest(){
+
+        /** verify userMark */
+        if(localStorage.getItem('UserMudiTest')) {
+            this.testType = localStorage.getItem('UserMudiTest');
+            return
+        };
+
+        /** when the new user in, mark him */
+        let body = {"idCompany": this.idCompany};
+
+        const 
+        consult  =  await fetch('https://viewer.mudi.com.co:3589/api/mudiv1/getInfoTest',{
+            method:'Post',
+            headers:{"Content-type":"application/json"},
+            body: JSON.stringify(body)
+        })
+
+        /** Update lastTest */
+        const 
+        response = await consult.json();
+        await this.updateTest(response.data[0].test)
+    };
+
+    /** Update testActual  ✔️ --> Se puede revisar máaaaaaas a profundidad */
+    async updateTest(lastTest){
+
+        /** Modify testType DataBase */
+        let testUpdate;
+        lastTest == 'A' ? testUpdate = 'B' : testUpdate = 'A';
+
+        /** Body */
+        let body = {"idCompany":"147" , "typeTest":`${testUpdate}`};
+
+        /** Request */
+        const 
+        consult  =  await fetch('https://viewer.mudi.com.co:3589/api/mudiv1/updateInfoTest',{
+            method:'Post',
+            headers:{"Content-type":"application/json"},
+            body: JSON.stringify(body)
+        });
+
+        // markUser here in localStorage
+        this.testType=testUpdate;
+        localStorage.setItem('UserMudiTest',testUpdate)
+    };
+
+    /** Recognize 
+            HELP TO RECOGNIZE TYPE OF DEVICE  & INFO DEVICE 
+            Android device: manufacturer & Model
+            IOS : "Apple" & IOS version ✔️
+    */
+    recognizeDevice(){
+
+        /** Define Structure Response */
+        let response = {
+            Device: null ,
+            type: `Mobile`
+        };
+        
+        const 
+        userAgent   = navigator.userAgent,
+        listUA      = userAgent.split(" ");
+
+        /** Better use REGEX ❌ Add TO DO */
+
+        /** OS Android  */
+            if(userAgent.toLowerCase().includes('android')){
+                let androidVersion  = listUA[2] + ' ' + listUA[3];
+                let androidModel    = listUA[4] + ' ' + listUA[5];
+                response.Device = `Android ${androidModel} V-${androidVersion}`;
+            }
+
+        /** IOS */
+            else if (userAgent.toLowerCase().includes('iphone'))    
+                response.Device = `iPhone OS ${listUA[5].split('_').join('.')}`;
+            else if (userAgent.toLowerCase().includes('ipad'))      
+                response.Device = `iPad OS ${listUA[5].split('_').join('.')}`;
+            else if (userAgent.toLowerCase().includes('Macintosh')) 
+                response.Device = `Macintosh OS ${listUA[6].split('_').join('.')}`;
+            
+        /** Window */
+            else if (listUA[1].toLowerCase().includes('windows')){   
+                response.Device = `Windows V- ${listUA[3].replace(";", " ")} ${listUA[4].replace(";", " ")}`;
+                response.type = `Desk`
+            }
+
+        /** Linux */
+            else if (userAgent.toLowerCase().includes('linux') && !userAgent.toLowerCase().includes('android')){
+                response.Device = `Linux`; 
+                response.type   = `Desk`;
+            }
+
+        /** Unknowled */
+            else {
+                response.Device = "Desconocido"
+                response.type   = null;
+            };
+
+        this.infodevice = response;
+    };
+
+    /** Get Date ✔️ FORMAT DATETIME AAAA-MM-DD HH:MM:SS  */
+    getDate(){
+
+        /** Build Date */
+        const dateActual = new Date();
+
+        /** Build information */
+        let dateInfo = {
+            month           : dateActual.getMonth() + 1,
+            day             : dateActual.getDate(),
+            year            : dateActual.getFullYear(),
+            hour            : dateActual.getHours(),
+            minute          : dateActual.getMinutes(),
+            seconds         : dateActual.getSeconds()  
+        };
+
+        /** Build Date Sesion  dd -- mm -- aa -- ||  hh -- mm -- ss */
+        this.date = `${dateInfo.year}-${dateInfo.month<10 ? '0'+ dateInfo.month : dateInfo.month}-${dateInfo.day} ${dateInfo.hour<10 ? '0'+dateInfo.hour : dateInfo.hour}:${dateInfo.minute}:${dateInfo.seconds}`;
+    };
+
+    /** GET PATH URL ✔️ */
+    getPathURL(){this.pathURL = window.location.pathname};
+
+    /** Event viewer */
+    eventView(){
+        this.viewer == 0 && (this.viewer++)
+    };
+
+    /** Event Mudi interaction 3D AR  */
+    eventsMudi3D(){this.interaction3D ++};
+    eventsMudiAR(){this.interactionAR ++};
+
+    /** Event add to car */
+    eventAddToCar(){
+        /** Verifying btn Add to Car */
+        let btnAddToCar =  document.body.querySelector('.cart-add')
+        if(!btnAddToCar){ requestAnimationFrame(this.eventAddToCar.bind(this)) }
+        else{ btnAddToCar.addEventListener('click',()=> this.addToCar++ ) }
+    };
+
+    /** Timing in Sesion  ✔️*/
+    timeSesion(){
+
+        /** Configaration Time */
+        let time = {
+            hour: 0,
+            minutes: 0,
+            seconds: 0
+        };
+    
+        setInterval(() => {
+    
+            /**up one Sec */
+            time.seconds++;
+    
+            /** verify Secs */
+            if (time.seconds < 10) {
+                time.seconds = `0${time.seconds}`
+                time.minutes == 0 && (time.minutes = '00')
+                time.hour == 0 && (time.hour = '00')
+            }
+    
+            /** VerifyMinutes */
+            if (time.seconds == 60) {
+                time.seconds = '00';
+                time.minutes++;
+                time.minutes < 10 ? time.minutes = `0${time.minutes}` : time.minutes = `${time.minutes}`;
+            }
+    
+            /** Verify hours */
+            if (time.minutes == 60) {
+                time.minutes = '00';
+                time.hour++;
+                time.hour < 10 ? time.hour = `0${time.hour}` : time.hour = `${time.hour}`;
+            }
+    
+            this.timeInSesion = `${time.hour}:${time.minutes}:${time.seconds}`;
+    
+        }, 1000);
+    };
+
+    /** Get sku  */
+    getSkuNumer(sku){this.sku = sku};
+
+    /** Get Category -- Programar por clientee */
+    getCategory(){
+        let category = document.body.querySelector('.breadcrumb li:nth-of-type(2) a') ?? null;
+
+        if (!category) requestAnimationFrame(this.getCategory.bind(this))
+        else           this.category       = document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML;
+    };
+
+    /** Get subCategory -- programar por cliente */
+    getSubCategory(){
+        let subCategory =  document.body.querySelector('.breadcrumb li:nth-of-type(3) a') ?? null;
+
+        if (!subCategory)   requestAnimationFrame(this.getCategory.bind(this))
+        else                this.subCategory       =  document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML;
+    };
+
+    /** Pixel Mudi ON */
+    async pixelOn(skunumber){
+
+        let beforeUnloaded =  window.addEventListener('beforeunload', (e)=>{
+            /** Build Body */
+           let body = {
+               "testType"          : this.testType,
+               "viewer"            : this.viewer,
+               "interaction3D"     : this.interaction3D,
+               "interactionAR"     : this.interactionAR,
+               "addToCar"          : this.addToCar,
+               "idCompany"         : this.idCompany,
+               "timeInSesion"      : this.timeInSesion,
+               "sku"               : this.sku,
+               "category"          : this.category,
+               "subCategory"       : this.subCategory,
+               "pathURL"           : this.pathURL,
+               "dates"             : this.date,
+               "device"            : this.infodevice.type,
+               "deviceDescription" : this.infodevice.Device
+           };
+
+           this.sendDataMudiServer();
+       } , false);
+        
+        /** verify Result typeTest */
+        this.testType && (
+
+            /** ✔️ get PathName */
+            this.getPathURL(),
+
+            this.getSkuNumer(skunumber),
+            this.getCategory(),
+            this.getSubCategory(),
+
+            /** Event add To car */
+            this.eventAddToCar(),
+
+            /** ✔️ getDate */
+            this.getDate(),
+
+            /** ✔️get Device */
+            this.recognizeDevice(),
+
+            /** ✔️Listener sendData Mudi */
+            beforeUnloaded
+
+        );
+    };
+
+    /** sendData MudiSever */
+    async sendDataMudiServer(){
+        
+        /** Build Body */
+        let body = {
+            "testType"          : this.testType,
+            "viewer"            : this.viewer,
+            "interaction3D"     : this.interaction3D,
+            "interactionAR"     : this.interactionAR,
+            "addToCar"          : this.addToCar,
+            "idCompany"         : this.idCompany,
+            "timeInSesion"      : this.timeInSesion,
+            "sku"               : this.sku,
+            "category"          : this.category,
+            "subCategory"       : this.subCategory,
+            "pathURL"           : this.pathURL,
+            "dates"             : this.date,
+            "device"            : this.infodevice.type,
+            "deviceDescription" : this.infodevice.Device
+        };
+
+        /** Doing request */
+        try {
+            const request = await fetch('http://localhost:3589/api/mudiv1/sendRegistry',{
+                method:'POST',
+                headers:{"Content-type":"application/json"},
+                body:JSON.stringify(body)
+            })
+            const response = await request.json();
+        } catch (error) {
+            console.log(`Mudi Error:` + error)
+        };
+    };
+
+};
+const mudiData = new sendData();
+/** ✔️ start timer Mudi */
+mudiData.timeSesion();
+
+/** Mudi Experience */
 class MudiExperience{
 
     constructor(){
@@ -5,7 +322,9 @@ class MudiExperience{
         this.dataSever          = null;
         this.skuNumber          = null;
         this.fatherContainer    = null;
-    }
+
+        this.flagTesting        = true;
+    };
 
     /** Conect mudiServer  ✔️ */
     async conectServer(skuNumber){
@@ -93,8 +412,11 @@ class MudiExperience{
 
         containerBtns.querySelector('#img3DBtn').addEventListener('click',()=>{
             this.createModal();
+            /** Pixel Mudi */
+            mudiData.eventsMudi3D();
+            /** GTM */
             this.sendEventInteraction('3D');
-        })
+        });
 
         fragment.appendChild(containerBtns)
 
@@ -203,6 +525,8 @@ class MudiExperience{
             if(window.innerWidth>1000){
                 !flagAR 
                 ? (
+                    /** Event pixel Mudi */
+                    mudiData.eventsMudiAR(),
                     document.body.querySelector('.containerQRMudi').style.right="15%",
                     changeStyleBtnAR(flagAR,this.color),
                     flagAR = !flagAR
@@ -271,10 +595,44 @@ class MudiExperience{
         })
     };
 
+    /** viewer event Mudi GTM  */
+    sendEventViewer(){
+        let OSdevice;
+
+        if (navigator.userAgent.includes('Android')) OSdevice = 'Android';
+        else if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad')) OSdevice = "IOS";
+        else OSdevice = 'DESK';
+
+        window.dataLayer && dataLayer.push({
+            event: `visualizacion_botones`,
+            valorMudi: 1,
+            sku: this.skuNumber,
+            category:document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML || 'null',
+            subCategory: document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML || ' null',
+            sistemaOperativo: OSdevice
+        })
+    };
+
     /** verifyExperience  ✔️ */
     async experienceOn(skuNumber, fatherContainer){
     
+        /** Verify father Container */
         fatherContainer && (this.fatherContainer = fatherContainer);
+
+        /** Verify testType */
+        await mudiData.consultTest();
+
+        /** B = don't Show Experience */
+        if(mudiData.testType == 'B'){
+            
+            /** get info PIXEL MUDI */
+            this.flagTesting && mudiData.pixelOn(skuNumber);
+            /** Viewer event GTM  */
+            this.flagTesting && this.sendEventViewer();
+
+            this.flagTesting = false;
+            return;
+        }
 
         /** Response Mudi server */
         await this.conectServer(skuNumber);
@@ -288,31 +646,17 @@ class MudiExperience{
 
         /** Create Styles */
         this.createStyles();
-
         /** Create Buttons */
         this.createBtns();
 
-        /** Create Flag Event Btns Mudi*/
-        let flag = null;
+        /** get info PIXEL MUDI */
+        this.flagTesting && mudiData.pixelOn(skuNumber);
+        this.flagTesting && mudiData.eventView();
 
-        for(let i = 0 ; i < window.dataLayer.length ; i++ ){window.dataLayer[i].event == 'visualizacion_botones' && ( flag = true ) };
+        /** Viewer event GTM  */
+        this.flagTesting && this.sendEventViewer();
 
-        flag 
-        ? false 
-        : dataLayer.push({
-            event: "visualizacion_botones",
-            valorMudi: "1",
-            sku: this.skuNumber,
-            category: document.body.querySelector('.breadcrumb li:nth-of-type(2) a').innerHTML || 'null',
-            subCategory: document.body.querySelector('.breadcrumb li:nth-of-type(3) a').innerHTML || ' null'
-        });  
-
-        setTimeout(()=>{
-            document.body.querySelector('.cart-add').addEventListener('click',()=>{
-                this.sendEventInteraction('ADD TO CAR');
-            })
-        },2000)
-
+        this.flagTesting = false;
     };
 
 };
