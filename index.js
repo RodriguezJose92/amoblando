@@ -17,6 +17,7 @@ class sendData{
         this.category           = null;  // ✔️
         this.subCategory        = null;  // ✔️
         this.pathURL            = null;  // ✔️
+        this.domain             = null;
         this.date               = null;  // ✔️
         this.infodevice         = null;  // ✔️
         
@@ -145,8 +146,11 @@ class sendData{
         this.date = `${dateInfo.year}-${dateInfo.month<10 ? '0'+ dateInfo.month : dateInfo.month}-${dateInfo.day} ${dateInfo.hour<10 ? '0'+dateInfo.hour : dateInfo.hour}:${dateInfo.minute}:${dateInfo.seconds}`;
     };
 
-    /** GET PATH URL ✔️ */
-    getPathURL(){this.pathURL = window.location.pathname};
+    /** GET PATH URL AND Domain ✔️ */
+    getPathURL(){
+        this.pathURL = window.location.pathname;
+        this.domain  = location.hostname.split('.')[1]
+    };
 
     /** Event viewer */
     eventView(){
@@ -229,24 +233,6 @@ class sendData{
     async pixelOn(skunumber){
 
         let beforeUnloaded =  window.addEventListener('beforeunload', (e)=>{
-            /** Build Body */
-           let body = {
-               "testType"          : this.testType,
-               "viewer"            : this.viewer,
-               "interaction3D"     : this.interaction3D,
-               "interactionAR"     : this.interactionAR,
-               "addToCar"          : this.addToCar,
-               "idCompany"         : this.idCompany,
-               "timeInSesion"      : this.timeInSesion,
-               "sku"               : this.sku,
-               "category"          : this.category,
-               "subCategory"       : this.subCategory,
-               "pathURL"           : this.pathURL,
-               "dates"             : this.date,
-               "device"            : this.infodevice.type,
-               "deviceDescription" : this.infodevice.Device
-           };
-
            this.sendDataMudiServer();
        } , false);
         
@@ -293,7 +279,8 @@ class sendData{
             "pathURL"           : this.pathURL,
             "dates"             : this.date,
             "device"            : this.infodevice.type,
-            "deviceDescription" : this.infodevice.Device
+            "deviceDescription" : this.infodevice.Device,
+            "domain"            : this.domain
         };
 
         /** Doing request */
