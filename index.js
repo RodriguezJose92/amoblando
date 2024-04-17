@@ -537,7 +537,10 @@ class MudiExperience{
                     flagAR = !flagAR
                 )
             }
-            else window.open(`${this.dataServer.URL_AR}`,"_BLANK");
+            else {
+                mudiData.eventsMudiAR();
+                window.open(`${this.dataServer.URL_AR}`,"_BLANK");
+            } 
             flagAR && this.sendEventInteraction('AR')
         });
 
