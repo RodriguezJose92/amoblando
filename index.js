@@ -619,6 +619,16 @@ class MudiExperience{
         /** Verify father Container */
         fatherContainer && (this.fatherContainer = fatherContainer);
 
+        /** Response Mudi server */
+        await this.conectServer(skuNumber);
+
+        /** verify process */
+        if (!this.dataServer){
+            document.body.querySelector('.btnsMudiContainer') && document.body.querySelector('.btnsMudiContainer').remove();
+            console.warn(`El sku: ${skuNumber} no posee experiencias de 3D  y AR`)
+            return;
+        }
+
         /** Verify testType */
         await mudiData.consultTest();
 
@@ -632,17 +642,7 @@ class MudiExperience{
 
             this.flagTesting = false;
             return;
-        }
-
-        /** Response Mudi server */
-        await this.conectServer(skuNumber);
-
-        /** verify process */
-        if (!this.dataServer){
-            document.body.querySelector('.btnsMudiContainer') && document.body.querySelector('.btnsMudiContainer').remove();
-            console.warn(`El sku: ${skuNumber} no posee experiencias de 3D  y AR`)
-            return;
-        }
+        };
 
         /** Create Styles */
         this.createStyles();
