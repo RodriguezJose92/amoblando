@@ -285,7 +285,7 @@ class sendData{
 
         /** Doing request */
         try {
-            const request = await fetch('https://viewer.mudi.com.co:3589/api/mudiv1/sendRegistry',{
+            const request = await fetch('http://localhost:3589/api/mudiv1/sendRegistry',{
                 method:'POST',
                 headers:{"Content-type":"application/json"},
                 body:JSON.stringify(body)
@@ -367,6 +367,7 @@ class MudiExperience{
         containerBtns = document.createElement('DIV');
         containerBtns.classList.add('btnsMudiContainer');
         containerBtns.appendChild(this.createTooltip());
+        containerBtns.setAttribute('skuNumber',this.skuNumber);
         containerBtns.innerHTML +=`
         <?xml version="1.0" encoding="UTF-8"?>
             <svg id="img3DBtn" class="btnMudi3D" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360">
@@ -652,3 +653,4 @@ class MudiExperience{
 };
 
 const mudiExperience = new MudiExperience();
+mudiExperience.experienceOn( 77018588103622 , document.body.querySelector('#deployMundi'))
