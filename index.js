@@ -653,4 +653,3 @@ class MudiExperience{
 };
 
 const mudiExperience = new MudiExperience();
-mudiExperience.experienceOn( 77018588103622 , document.body.querySelector('#deployMundi'))
