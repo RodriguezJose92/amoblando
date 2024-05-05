@@ -9,8 +9,8 @@
     width: max-content;
     height: max-content;
     right: 0%;
-    top:0%;
-    z-index:10;
+    top: 0%;
+    z-index: 10;
 }
 
 .btnMudi3D {
@@ -190,8 +190,8 @@
     width: 30px;
 }
 
-.hrTitle{
-    margin-botton:20px
+.hrTitle {
+    margin-bottom: 20px
 }
 
 @media screen and (min-width:1400px) and (max-width:1700px) {
@@ -227,5 +227,27 @@
         color: white;
         transition: all .2s ease-in-out;
         transform: scale(.8);
+    }
+}
+
+@media screen and (max-width:500px) {
+    .iframeMudi3D {
+        background-color: white;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+        height: 85%;
+        border-radius: 10px;
+        overflow: hidden;
+        filter: drop-shadow(3px 5px 10px rgba(10, 10, 10, 0.532));
+    }
+
+    .imgBtnAR {
+        width: 160px;
+        height: 80px;
+        cursor: pointer;
+        filter: drop-shadow(3px 5px 5px rgba(10, 10, 10, 0.196));
     }
 }
