@@ -316,9 +316,20 @@ class MudiExperience{
 
         /** B = don't Show Experience */
         let mudiTest = localStorage.getItem('UserMudiTest');
-        if( mudiTest == 'B'){
 
-            if( window.mudiPixel ){ window.mudiPixel.viewerEvent = `testB` }
+        /** Verify Pixel */
+        const verifyMudiPixel = () =>{
+
+            if (window.mudiPixel == undefined ){
+                requestAnimationFrame(verifyMudiPixel)
+            } else{
+                window.mudiPixel.viewerEvent = `testB`;
+            };
+
+        };
+
+        if( mudiTest == 'B'){
+            verifyMudiPixel()
             /** Viewer event GTM  */
             this.flagTesting && this.sendEventViewer();
             this.flagTesting = false;
