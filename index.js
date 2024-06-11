@@ -314,36 +314,14 @@ class MudiExperience{
             return;
         }
 
-        /** B = don't Show Experience */
-        let mudiTest = localStorage.getItem('UserMudiTest');
-
-        /** Verify Pixel */
-        const verifyMudiPixel = () =>{
-
-            if (window.mudiPixel == undefined ){
-                requestAnimationFrame(verifyMudiPixel)
-            } else{
-                window.mudiPixel.viewerEvent = `testB`;
-            };
-
-        };
-
-        if( mudiTest == 'B'){
-            verifyMudiPixel()
-            /** Viewer event GTM  */
-            this.flagTesting && this.sendEventViewer();
-            this.flagTesting = false;
-            return;
-        };
-
         /** Create Styles */
         this.createStyles();
+
         /** Create Buttons */
         this.createBtns();
 
         /** Viewer event GTM  */
-        this.flagTesting && this.sendEventViewer();
-        this.flagTesting = false;
+         this.sendEventViewer();
     };
 
 };
