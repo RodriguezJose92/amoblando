@@ -225,6 +225,7 @@ class MudiExperience{
         } 
         flagAR && this.sendEventInteraction('AR')
     });
+    }
 
     /** Create Modal ✔️ */
     createModal(){
