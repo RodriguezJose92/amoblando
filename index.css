@@ -194,6 +194,21 @@
     margin-bottom: 20px
 }
 
+.goToSite3D {
+    display: block;
+    background-color: blue;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.goToSite3D:hover {
+    background-color: white;
+    color: blue;
+}
+
 @media screen and (min-width:1400px) and (max-width:1700px) {
     .containerQRMudi {
         position: absolute;
