@@ -1,6 +1,6 @@
 
 /** Mudi Experience */
-class MudiExperienceTest{
+class MudiExperience{
 
     constructor(){
         this.color              = "#03457c";
@@ -449,7 +449,7 @@ class MudiExperienceTest{
 
 };
 
-const mudiExperiencetest = new MudiExperienceTest();
+const mudiExperience = new MudiExperience();
 
 const thumbnailDivs = document.querySelectorAll('.thumbnail-images');
 
@@ -473,8 +473,8 @@ if (btnCategory.length > 0) {
 
             if (url) {
                 // Ejecutar las funciones necesarias con la URL y SKU
-                mudiExperiencetest.createStyles();
-                mudiExperiencetest.createModalPLP(e.target.attributes.sku.value, url);
+                mudiExperience.createStyles();
+                mudiExperience.createModalPLP(e.target.attributes.sku.value, url);
 
                 // Imprimir la URL en la consola
                 console.log(url);
