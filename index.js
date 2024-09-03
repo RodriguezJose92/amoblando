@@ -449,13 +449,16 @@ class MudiExperience{
 
 const mudiExperience = new MudiExperience();
 
-const some = document.querySelectorAll('.imgMundi.iconCatMudi_3D')
+setTimeout(()=>{
+    const some = document.querySelectorAll('.imgMundi.iconCatMudi_3D')
 
-if(some.length>0){
-    some.forEach(child=>{
-        child.addEventListener('click', async(e)=>{
-            mudiExperience.createStyles();
-            mudiExperience.createModalPLP(e.target.attributes.sku.value)
+    if(some.length>0){
+        some.forEach(child=>{
+            child.addEventListener('click', async(e)=>{
+                mudiExperience.createStyles();
+                mudiExperience.createModalPLP(e.target.attributes.sku.value)
+            })
         })
-    })
-}
+    }
+},2000)
+
