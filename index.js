@@ -109,7 +109,7 @@ class MudiExperience{
     };
 
 /** Create Modal ✔️ */
-    createModalPLP(skuNumber,moreDetails){
+    createModalPLP(skuNumber){
 
         /** create variables */
         let flagAR = false;
@@ -123,7 +123,6 @@ class MudiExperience{
             <div class="iframeMudi3D">
                 <button class="closeModalMudi" style="color:${this.color}">X</button>
                 <iframe class="modelMudi" src="https://viewer.mudi.com.co/v1/web/?id=147&sku=${skuNumber}"></iframe>
-                <a class="goToSite3D" style="display:block" href="https://amoblando.ulcomerce.com/${moreDetails}">Ver más detalles</a>
                 <div class="containerBtnsActions">
                     <svg xmlns="http://www.w3.org/2000/svg" id="imgARBtn" class="imgBtnAR" viewBox="0 0 317 112">
                     <defs>
@@ -195,7 +194,6 @@ class MudiExperience{
 
                         </div>
                     </div>
-                      
                 </div>
             </div>
         `;
@@ -451,37 +449,13 @@ class MudiExperience{
 
 const mudiExperience = new MudiExperience();
 
-const thumbnailDivs = document.querySelectorAll('.thumbnail-images');
+const some = document.querySelectorAll('.imgMundi.iconCatMudi_3D')
 
-let moreDetails = [];
-
-thumbnailDivs.forEach(thumbnailDiv => {
-    const link = thumbnailDiv.querySelector('a');
-    if (link && link.href) {
-        moreDetails.push(link.getAttribute('href'));
-    } else {
-        moreDetails.push(null); // O cualquier valor que indique que no hay href
-    }
-});
-
-const btnCategory = document.querySelectorAll('.imgMundi.iconCatMudi_3D');
-if (btnCategory.length > 0) {
-    btnCategory.forEach((child, index) => {
-        child.addEventListener('click', async (e) => {
-            // Aquí accedemos al href correspondiente al índice actual
-            const url = moreDetails[index];
-
-            if (url) {
-                // Ejecutar las funciones necesarias con la URL y SKU
-                mudiExperience.createStyles();
-                mudiExperience.createModalPLP(e.target.attributes.sku.value, url);
-
-                // Imprimir la URL en la consola
-                console.log(url);
-            } else {
-                console.error('No se encontró un href válido para este elemento.');
-            }
-        });
-    });
+if(some.length>0){
+    some.forEach(child=>{
+        child.addEventListener('click', async(e)=>{
+            mudiExperience.createStyles();
+            mudiExperience.createModalPLP(e.target.attributes.sku.value)
+        })
+    })
 }
-
