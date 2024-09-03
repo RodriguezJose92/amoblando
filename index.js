@@ -454,6 +454,7 @@ setTimeout(()=>{
 
     if(some.length>0){
         some.forEach(child=>{
+            console.log('setting')
             child.addEventListener('click', async(e)=>{
                 mudiExperience.createStyles();
                 mudiExperience.createModalPLP(e.target.attributes.sku.value)
