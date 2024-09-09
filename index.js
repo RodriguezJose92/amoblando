@@ -1,6 +1,6 @@
 
 /** Mudi Experience */
-class MudiExperienceTest{
+class MudiExperience{
 
     constructor(){
         this.color              = "#03457c";
@@ -448,7 +448,7 @@ class MudiExperienceTest{
 
 };
 
-const mudiExperienceTest = new MudiExperienceTest();
+const mudiExperience = new MudiExperience();
 
 setTimeout(() => {
     const btnCategory = document.querySelectorAll('.imgMundi.iconCatMudi_3D');
@@ -467,8 +467,8 @@ setTimeout(() => {
             }
 
  
-            mudiExperienceTest.createStyles();
-            mudiExperienceTest.createModalPLP(e.target.attributes.sku.value, link);
+            mudiExperience.createStyles();
+            mudiExperience.createModalPLP(e.target.attributes.sku.value, link);
         });
     });
 }, 2000);
