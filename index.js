@@ -109,7 +109,7 @@ class MudiExperience{
     };
 
 /** Create Modal ✔️ */
-    createModalPLP(skuNumber){
+    createModalPLP(skuNumber,link){
 
         /** create variables */
         let flagAR = false;
@@ -123,6 +123,7 @@ class MudiExperience{
             <div class="iframeMudi3D">
                 <button class="closeModalMudi" style="color:${this.color}">X</button>
                 <iframe class="modelMudi" src="https://viewer.mudi.com.co/v1/web/?id=147&sku=${skuNumber}"></iframe>
+                <a class="goToSite3D" style="display:block" href="https://amoblando.ulcomerce.com/${link}">Ver más detalles</a>
                 <div class="containerBtnsActions">
                     <svg xmlns="http://www.w3.org/2000/svg" id="imgARBtn" class="imgBtnAR" viewBox="0 0 317 112">
                     <defs>
@@ -449,17 +450,25 @@ class MudiExperience{
 
 const mudiExperience = new MudiExperience();
 
-setTimeout(()=>{
-    const some = document.querySelectorAll('.imgMundi.iconCatMudi_3D')
+setTimeout(() => {
+    const btnCategory = document.querySelectorAll('.imgMundi.iconCatMudi_3D');
+    const thumbnailDivs = document.querySelectorAll('.thumbnail-images');
+    
+    btnCategory.forEach((child, index) => {
+        child.addEventListener('click', async (e) => {
+            const relatedThumbnailDiv = thumbnailDivs[index]; 
+            const link = relatedThumbnailDiv.querySelector('a');
+            const url = link ? link.getAttribute('href') : null; 
 
-    if(some.length>0){
-        some.forEach(child=>{
-            console.log('setting')
-            child.addEventListener('click', async(e)=>{
-                mudiExperience.createStyles();
-                mudiExperience.createModalPLP(e.target.attributes.sku.value)
-            })
-        })
-    }
-},2000)
+            if (url) {
+                console.log(`URL del producto: ${url}`);
+            } else {
+                console.log('No se encontró la URL para este producto.');
+            }
 
+ 
+            mudiExperience.createStyles();
+            mudiExperience.createModalPLP(e.target.attributes.sku.value, link);
+        });
+    });
+}, 2000);
