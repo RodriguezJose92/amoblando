@@ -1,6 +1,6 @@
 
 /** Mudi Experience */
-class MudiExperience{
+class MudiExperienceTest{
 
     constructor(){
         this.color              = "#03457c";
@@ -123,7 +123,7 @@ class MudiExperience{
             <div class="iframeMudi3D">
                 <button class="closeModalMudi" style="color:${this.color}">X</button>
                 <iframe class="modelMudi" src="https://viewer.mudi.com.co/v1/web/?id=147&sku=${skuNumber}"></iframe>
-                <a class="goToSite3D" style="display:block" href="https://amoblando.ulcomerce.com/${link}">Ver más detalles</a>
+                <a class="goToSite3D" style="display:block" href="${link}">Ver más detalles</a>
                 <div class="containerBtnsActions">
                     <svg xmlns="http://www.w3.org/2000/svg" id="imgARBtn" class="imgBtnAR" viewBox="0 0 317 112">
                     <defs>
@@ -224,7 +224,7 @@ class MudiExperience{
             else {
                 window.open(`https://viewer.mudi.com.co/v1/ar/?id=147&sku=${skuNumber}`,"_BLANK");
             } 
-            flagAR && this.sendEventInteraction('AR')
+            flagAR && this.sendEventInteraction('PLP')
         });
 
         document.body.appendChild(modalMudi)
@@ -448,7 +448,7 @@ class MudiExperience{
 
 };
 
-const mudiExperience = new MudiExperience();
+const mudiExperienceTest = new MudiExperienceTest();
 
 setTimeout(() => {
     const btnCategory = document.querySelectorAll('.imgMundi.iconCatMudi_3D');
@@ -467,8 +467,8 @@ setTimeout(() => {
             }
 
  
-            mudiExperience.createStyles();
-            mudiExperience.createModalPLP(e.target.attributes.sku.value, link);
+            mudiExperienceTest.createStyles();
+            mudiExperienceTest.createModalPLP(e.target.attributes.sku.value, link);
         });
     });
 }, 2000);
