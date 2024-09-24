@@ -217,17 +217,21 @@ class MudiExperience {
     });
 
     /** Inicializar ARExperience */
-    modalMudi.querySelector("#imgARBtn").addEventListener("click", () => {
+    modalMudi.querySelector(`#imgARBtn`).addEventListener("click", () => {
       if (window.innerWidth > 1000) {
-        flagAR = !flagAR;
-        document.querySelector("#containerQR").classList.toggle('active', flagAR);
-        changeStyleBtnAR(flagAR, this.color);
-        if (flagAR) {
-          this.sendEventInteraction("PLP");
-        }
+        !flagAR
+          ? ((document.body.querySelector(".containerQRMudi").style.right =
+            "15%"),
+            changeStyleBtnAR(flagAR, this.color),
+            (flagAR = !flagAR))
+          : ((document.body.querySelector(".containerQRMudi").style.right =
+            "0vw"),
+            changeStyleBtnAR(flagAR, this.color),
+            (flagAR = !flagAR));
       } else {
-        window.open(`https://viewer.mudi.com.co/v1/ar/?id=147&sku=${skuNumber}`, "_blank");
+        window.open(`https://viewer.mudi.com.co/v1/ar/?id=147&sku=${skuNumber}`, "_BLANK");
       }
+      flagAR && this.sendEventInteraction("AR");
     });
 
      /** Verify Style Bttn AR  */
