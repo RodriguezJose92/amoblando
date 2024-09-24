@@ -1,5 +1,5 @@
 /** Mudi Experience */
-class MudiExperienceTest {
+class MudiExperience {
   constructor() {
     this.color = "#03457c";
     this.dataSever = null;
@@ -455,7 +455,7 @@ class MudiExperienceTest {
   }
 }
 
-const mudiExperienceTest = new MudiExperienceTest();
+const mudiExperience = new MudiExperience();
 
 setTimeout(() => {
   const btnCategory = document.querySelectorAll(".imgMundi.iconCatMudi_3D");
@@ -474,10 +474,10 @@ setTimeout(() => {
       );
       const colorsMudi = JSON.parse(inputColorMudi.value);
 
-      mudiExperienceTest.createStyles();
+      mudiExperience.createStyles();
       // Pasar los colores como parametro a la función createModalPLP
       console.log("modal 1 muchas?");
-      mudiExperienceTest.createModalPLP(
+      mudiExperience.createModalPLP(
         e.target.attributes.sku.value,
         link,
         colorsMudi
