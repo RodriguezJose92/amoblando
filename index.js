@@ -202,11 +202,13 @@ class MudiExperience {
     /** Agregar event listener para el cambio de color */
     const colorSelect = modalMudi.querySelector("#colorSelect");
     const iframeMudi = modalMudi.querySelector("#iframeMudi");
-    console.log("modal 2 muchas?");
+    const qrMudi = modalMudi.querySelector('.mudiQR');
+    
     colorSelect.addEventListener("change", (e) => {
       e.stopPropagation();
        const selectedSku = e.target.value;
-        iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`
+        iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
+        qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
     });
     
     /** Cerrar el modal */
