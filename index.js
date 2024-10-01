@@ -110,14 +110,23 @@ class MudiExperience {
     /** Creación del select con los colores por producto */
     console.log(referenceColors);
     let colorOptionsHTML = `
-      <select id="colorSelect" class="colorSelect" style="width: auto; background:red; padding: 8px; border-radius: 6px; border: 1px solid #ccc; background-color: #f9f9f9; color: #333; position: absolute; bottom: 33px; z-index: 1000;">
+    
+      <div id="colorSelect" class="color-buttons" style="display: flex; align-items: center; gap: 0.5rem; position: absolute; bottom: 33px; z-index: 1000;">
     `;
-
-    /** Se agregan los colores como opción del select donde value es el sku */
+  
+    /** Se agregan los colores como botones donde el valor es el sku */
     referenceColors.forEach((item) => {
-      colorOptionsHTML += `<option value="${item.sku}" ${item.sku === skuNumber ? "selected" : ""}>${item.color}</option>`;
+      colorOptionsHTML += `
+        <button 
+          class="color-button" 
+          value="${item.sku}" 
+          style="background-image: url(${item.textura}); background-size: cover; border: ${item.sku === skuNumber ? '2px solid black' : 'none'}; width: 40px; height: 40px; border-radius: 50%; flex: 0 0 40px;" 
+          ${item.sku === skuNumber ? 'data-selected="true"' : ''}
+        >
+        </button>
+      `;
     });
-    colorOptionsHTML += "</select>";
+    colorOptionsHTML += "</div>";
     /** Crear variables */
     let flagAR = false;
 
@@ -199,17 +208,25 @@ class MudiExperience {
         </div>
     `;
 
-    /** Agregar event listener para el cambio de color */
-    const colorSelect = modalMudi.querySelector("#colorSelect");
-    const iframeMudi = modalMudi.querySelector("#iframeMudi");
-    const qrMudi = modalMudi.querySelector('.mudiQR');
-    
-    colorSelect.addEventListener("change", (e) => {
+   /** Agregar event listener para el cambio de color */
+  const colorButtons = modalMudi.querySelectorAll(".color-button");
+  const iframeMudi = modalMudi.querySelector("#iframeMudi");
+  const qrMudi = modalMudi.querySelector('.mudiQR');
+  
+  colorButtons.forEach(button => {
+    button.addEventListener("click", (e) => {
       e.stopPropagation();
-       const selectedSku = e.target.value;
-        iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
-        qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
+      const selectedSku = e.target.value;
+
+      // Actualizar el iframe y el QR con el nuevo SKU
+      iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
+      qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
+
+      // Actualizar la apariencia del botón seleccionado
+      colorButtons.forEach(btn => btn.style.border = 'none'); // Limpiar selección previa
+      e.target.style.border = '2px solid black'; // Resaltar nuevo seleccionado
     });
+  });
     
     /** Cerrar el modal */
     modalMudi.querySelector(".closeModalMudi").addEventListener("click", () => {
@@ -466,23 +483,19 @@ const mudiExperience = new MudiExperience();
 setTimeout(() => {
   const btnCategory = document.querySelectorAll(".imgMundi.iconCatMudi_3D");
   const thumbnailDivs = document.querySelectorAll(".thumbnail-images");
-  console.log(btnCategory);
+
   btnCategory.forEach((child, index) => {
-    child.removeEventListener('click', () =>{});
+    child.removeEventListener('click', () => {});
     child.addEventListener("click", async (e) => {
       e.stopPropagation();
-      // Obtener del input de colores asociado al producto seleccionado
+
       const relatedThumbnailDiv = thumbnailDivs[index];
       const link = relatedThumbnailDiv.querySelector("a");
       const url = link ? link.getAttribute("href") : null;
-      const inputColorMudi = relatedThumbnailDiv.querySelector(
-        "#referenceColorMudi"
-      );
-      const colorsMudi = JSON.parse(inputColorMudi.value);
-
+      const inputColorMudi = relatedThumbnailDiv.querySelector("#referenceColorMudi");
+      
+      let colorsMudi = inputColorMudi ? JSON.parse(inputColorMudi.value) : [];      
       mudiExperience.createStyles();
-      // Pasar los colores como parametro a la función createModalPLP
-      console.log("modal 1 muchas?");
       mudiExperience.createModalPLP(
         e.target.attributes.sku.value,
         link,
