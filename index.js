@@ -1,5 +1,5 @@
 /** Mudi Experience */
-class MudiExperience {
+class MudiExperienceTest {
   constructor() {
     this.color = "#03457c";
     this.dataSever = null;
@@ -207,42 +207,31 @@ class MudiExperience {
     `;
 
    /** Agregar event listener para el cambio de color */
-const colorButtons = modalMudi.querySelectorAll(".color-button");
-const iframeMudi = modalMudi.querySelector("#iframeMudi");
-const qrMudi = modalMudi.querySelector('.mudiQR');
-const verDetalles = modalMudi.querySelector('.goToSite3D');
-
-colorButtons.forEach(button => {
-  button.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const selectedSku = e.target.value;
-    const selectedIdOption = referenceColors.find(item => item.sku === selectedSku).idOption;
-    if (typeof link !== 'string') {
-      link = String(link);
-    }
-    const updatedLink = link.replace(/#\d+/, `#${selectedIdOption}`);
-    verDetalles.href = `${updatedLink}`
-
-    // Actualizar el iframe y el QR con el nuevo SKU
-    iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
-    qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
-
-    // Actualizar la apariencia del botón seleccionado
-    colorButtons.forEach(btn => btn.style.border = 'none');
-    e.target.style.border = '2px solid red';
-  });
-});
-
-        // Actualizar el iframe y el QR con el nuevo SKU
-        iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
-        qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
-
-        // Actualizar la apariencia del botón seleccionado
-        colorButtons.forEach(btn => btn.style.border = 'none');
-        e.target.style.border = '2px solid red';
+  const colorButtons = modalMudi.querySelectorAll(".color-button");
+  const iframeMudi = modalMudi.querySelector("#iframeMudi");
+  const qrMudi = modalMudi.querySelector('.mudiQR');
+  const verDetalles = modalMudi.querySelector('.goToSite3D');
+  
+  colorButtons.forEach(button => {
+    button.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const selectedSku = e.target.value;
+      const selectedIdOption = referenceColors.find(item => item.sku === selectedSku).idOption;
+      if (typeof link !== 'string') {
+        link = String(link);
+      }
+      const updatedLink = link.replace(/#\d+/, `#${selectedIdOption}`);
+      verDetalles.href = `${updatedLink}`
+  
+      // Actualizar el iframe y el QR con el nuevo SKU
+      iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
+      qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
+  
+      // Actualizar la apariencia del botón seleccionado
+      colorButtons.forEach(btn => btn.style.border = 'none');
+      e.target.style.border = '2px solid red';
     });
-});
-
+  });
   
 
     
@@ -496,7 +485,7 @@ colorButtons.forEach(button => {
   }
 }
 
-const mudiExperience = new MudiExperience();
+const mudiExperienceTest = new MudiExperienceTest();
 
 setTimeout(() => {
   const btnCategory = document.querySelectorAll(".imgMundi.iconCatMudi_3D");
@@ -516,8 +505,8 @@ setTimeout(() => {
       let colorsMudi = inputColorMudi ? JSON.parse(inputColorMudi.value) : [];      
       let colorCombinations = colorCombination ? JSON.parse(colorCombination.value) : [];
       console.log(colorCombinations);
-      mudiExperience.createStyles();
-      mudiExperience.createModalPLP(
+      mudiExperienceTest.createStyles();
+      mudiExperienceTest.createModalPLP(
         e.target.attributes.sku.value,
         link,
         colorsMudi,
