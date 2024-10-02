@@ -213,30 +213,25 @@ const qrMudi = modalMudi.querySelector('.mudiQR');
 const verDetalles = modalMudi.querySelector('.goToSite3D');
 
 colorButtons.forEach(button => {
-    button.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const selectedSku = e.target.value;
+  button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const selectedSku = e.target.value;
+    const selectedIdOption = referenceColors.find(item => item.sku === selectedSku).idOption;
+    if (typeof link !== 'string') {
+      link = String(link);
+    }
+    const updatedLink = link.replace(/#\d+/, `#${selectedIdOption}`);
+    verDetalles.href = `${updatedLink}`
 
-        // Obtener el selectedIdOption basado en el SKU seleccionado
-        const selectedIdOption = referenceColors.find(item => item.sku === selectedSku).idOption;
-        
-        // Asegúrate de que combination no esté vacío
-        if (combination.length > 0) {
-            const firstCombinationKey = Object.keys(combination[0])[0]; // Obtener la clave del primer elemento
-            const firstCombinationValue = combination[0][firstCombinationKey]; // Obtener el valor correspondiente
+    // Actualizar el iframe y el QR con el nuevo SKU
+    iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
+    qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
 
-            // Validar si selectedIdOption es igual al primer valor de combination
-            if (selectedIdOption === firstCombinationValue) {
-                if (typeof link !== 'string') {
-                    link = String(link);
-                }
-
-                // Reemplazar los parámetros en el enlace
-                const updatedLink = link.replace(/#\d+/, `#${selectedIdOption}`).replace(/op=\d+/, `op=${firstCombinationValue}`);
-                verDetalles.href = `${updatedLink}`;
-                console.log(updatedLink);
-            }
-        }
+    // Actualizar la apariencia del botón seleccionado
+    colorButtons.forEach(btn => btn.style.border = 'none');
+    e.target.style.border = '2px solid red';
+  });
+});
 
         // Actualizar el iframe y el QR con el nuevo SKU
         iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
