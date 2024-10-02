@@ -106,9 +106,7 @@ class MudiExperience {
   }
 
   /** Create Modal ✔️ */
-  createModalPLP(skuNumber, link, referenceColors) {
-    /** Creación del select con los colores por producto */
-    console.log(referenceColors);
+  createModalPLP(skuNumber, link, referenceColors,combination) {
     let colorOptionsHTML = `
     
       <div id="colorSelect" class="color-buttons" style="display: flex; align-items: center; gap: 0.5rem; position: absolute; bottom: 33px; z-index: 1000;">
@@ -209,24 +207,49 @@ class MudiExperience {
     `;
 
    /** Agregar event listener para el cambio de color */
-  const colorButtons = modalMudi.querySelectorAll(".color-button");
-  const iframeMudi = modalMudi.querySelector("#iframeMudi");
-  const qrMudi = modalMudi.querySelector('.mudiQR');
-  
-  colorButtons.forEach(button => {
+const colorButtons = modalMudi.querySelectorAll(".color-button");
+const iframeMudi = modalMudi.querySelector("#iframeMudi");
+const qrMudi = modalMudi.querySelector('.mudiQR');
+const verDetalles = modalMudi.querySelector('.goToSite3D');
+
+colorButtons.forEach(button => {
     button.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const selectedSku = e.target.value;
+        e.stopPropagation();
+        const selectedSku = e.target.value;
 
-      // Actualizar el iframe y el QR con el nuevo SKU
-      iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
-      qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
+        // Obtener el selectedIdOption basado en el SKU seleccionado
+        const selectedIdOption = referenceColors.find(item => item.sku === selectedSku).idOption;
+        
+        // Asegúrate de que combination no esté vacío
+        if (combination.length > 0) {
+            const firstCombinationKey = Object.keys(combination[0])[0]; // Obtener la clave del primer elemento
+            const firstCombinationValue = combination[0][firstCombinationKey]; // Obtener el valor correspondiente
 
-      // Actualizar la apariencia del botón seleccionado
-      colorButtons.forEach(btn => btn.style.border = 'none'); // Limpiar selección previa
-      e.target.style.border = '2px solid black'; // Resaltar nuevo seleccionado
+            // Validar si selectedIdOption es igual al primer valor de combination
+            if (selectedIdOption === firstCombinationValue) {
+                if (typeof link !== 'string') {
+                    link = String(link);
+                }
+
+                // Reemplazar los parámetros en el enlace
+                const updatedLink = link.replace(/#\d+/, `#${selectedIdOption}`).replace(/op=\d+/, `op=${firstCombinationValue}`);
+                verDetalles.href = `${updatedLink}`;
+                console.log(updatedLink);
+            }
+        }
+
+        // Actualizar el iframe y el QR con el nuevo SKU
+        iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
+        qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
+
+        // Actualizar la apariencia del botón seleccionado
+        colorButtons.forEach(btn => btn.style.border = 'none');
+        e.target.style.border = '2px solid red';
     });
-  });
+});
+
+  
+
     
     /** Cerrar el modal */
     modalMudi.querySelector(".closeModalMudi").addEventListener("click", () => {
@@ -493,13 +516,17 @@ setTimeout(() => {
       const link = relatedThumbnailDiv.querySelector("a");
       const url = link ? link.getAttribute("href") : null;
       const inputColorMudi = relatedThumbnailDiv.querySelector("#referenceColorMudi");
+      const colorCombination = relatedThumbnailDiv.querySelector("#referenceCombinationsMudi")
       
       let colorsMudi = inputColorMudi ? JSON.parse(inputColorMudi.value) : [];      
+      let colorCombinations = colorCombination ? JSON.parse(colorCombination.value) : [];
+      console.log(colorCombinations);
       mudiExperience.createStyles();
       mudiExperience.createModalPLP(
         e.target.attributes.sku.value,
         link,
-        colorsMudi
+        colorsMudi,
+        colorCombinations
       );
     });
   });
