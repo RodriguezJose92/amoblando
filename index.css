@@ -292,5 +292,21 @@
     -ms-overflow-style: none;
     padding: 10px 0;
 }
+    .size-buttons{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: absolute;
+    bottom: 82px !important;
+    z-index: 1000;
+    max-width: 200px;
+    bottom: 84px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 10px 0;
+    }
     }
 }
