@@ -127,39 +127,10 @@ class MudiPixel {
         /** Add Event Purchase || Resend  */
         purchaseBtn
             ? (purchaseBtn.addEventListener('click', () => this.purchaseClick++),
-                this.verifyproductInteractive3D(),
                 console.log("%cMudi Pixel: \n", "color:#820ad1; font-weight:600", "Purchase Correctly setting 🚀"))
             : (requestAnimationFrame(this.verifyPurchase.bind(this)), this.verifyPurchaseButton++);
     };
 
-    /** 3.1 Verify interaction with products 3D Experience ❌*/
-    verifyproductInteractive3D() {
-
-        const allProductsSkus = document.body.querySelectorAll('.media-content-details')
-
-        for (let i = 0; i < allProductsSkus.length; i++) {
-
-            /** Get SKU NUMBER Cars product to Pay */
-            let productSKU = allProductsSkus[i].querySelector('.col-xs-10').innerHTML;
-
-            /** Open indexDB */
-            const db = this.DBMudiProducts.result;
-            const sku = db.transaction('products', 'readonly');
-            const objectStore = sku.objectStore('products');
-            const
-                cursor = objectStore.openCursor();
-            let array = [];
-
-            cursor.addEventListener("success", () => {
-                if (cursor.result) {
-                    productSKU == cursor.result.value.sku && array.push(productSKU)
-                    cursor.result.continue();
-                } else console.log('consulta realizada');
-            });
-
-            this.skuNumber = array;
-        };
-    };
 
 
     /** 4. Verify container Btns Mudi PDP ✔️ */
@@ -226,25 +197,6 @@ class MudiPixel {
                 this.skuNumber = skuContainer.getAttribute('skunumber'),
                 console.log("%cMudi Pixel: \n", "color:#820ad1; font-weight:600", "SkuNumber Correctly setting 🚀"))
             : (requestAnimationFrame(this.verifySku.bind(this)), this.verifySkuNumber++);
-
-    };
-
-
-    /** 7. Create Registry and DBIndexed Mudi ❌ */
-    createDB() {
-
-        this.DBMudiProducts.addEventListener('upgradeneeded', () => {
-            let resultRequest = DBMudiProducts.result;
-            resultRequest.createObjectStore('products', { autoIncrement: true });
-        });
-
-        this.DBMudiProducts.addEventListener('success', () => {
-            console.log('Todo salió bien')
-        });
-
-        this.DBMudiProducts.addEventListener('error', () => {
-            throw new Error('No pudimos abrir ni crear la base de datos del pixel de Mudi')
-        });
 
     };
 
@@ -543,33 +495,35 @@ class MudiPixel {
 
         );
 
-        if (location.pathname == '/checkout') {
+        if (location.pathname === '/checkout') {
 
-
-            const toalprodcutos = document.querySelectorAll('.media');
-            let name, sku, cantidad;
-
-            toalprodcutos.forEach(node => {
-                name = node.querySelector('.media-heading').innerHTML;
-                sku = node.querySelector('.media-content-details').children[1].innerHTML;
-                cantidad = node.querySelector('.media-content-details').children[5].innerHTML;
-            })
-
-            const total = document.getElementById('data-total').innerHTML.replace('$', '');
-
-            document.body.querySelector('.send-event-purchase').addEventListener('click', () => {
-                console.log(
-                    name,
-                    sku,
-                    cantidad,
-                    total,
-                )
-
-                /** Toca mirar si toca mandarle parametros o no  */
-                this.sendDataProducts(name,sku,cantidad,total);
-            })
-
+            const totalProductos = document.querySelectorAll('.media');
+            let productos = [];
+        
+            totalProductos.forEach(node => {
+                const name = node.querySelector('.media-heading')?.innerHTML || 'Nombre no disponible';
+                const sku = node.querySelector('.media-content-details')?.children[1]?.innerHTML || 'SKU no disponible';
+                const cantidad = node.querySelector('.media-content-details')?.children[5]?.innerHTML || 'Cantidad no disponible';
+                
+                productos.push({ name, sku, cantidad });
+            });
+        
+            const total = document.getElementById('data-total')?.innerHTML.replace('$', '').replace(/\./g, '').trim() || 'Total no disponible';
+        
+            document.body.querySelector('.send-event-purchase')?.addEventListener('click', () => {
+                productos.forEach(producto => {
+                    console.log("Datos enviados correctamente: ",
+                        producto.name,
+                        producto.sku,
+                        producto.cantidad,
+                        total
+                    );
+                    /** Llamada a la función con los parámetros correctos */
+                    sendDataProducts(producto.name, producto.sku, producto.cantidad, total);
+                });
+            });
         }
+        
 
     };
 
