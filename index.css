@@ -205,6 +205,10 @@
         padding: 15px 18px;
         border-radius: 10px;
 }
+.goToSite3D:hover {
+    background-color: #1d4fa1;
+    color: white;
+}
 
 .color-buttons{
     display: flex;
