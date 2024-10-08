@@ -548,6 +548,7 @@ class MudiExperience {
   /** Conect mudiServer  ✔️ */
   async conectServer(skuNumber) {
     const myBody = { skus: [skuNumber] };
+
     this.skuNumber = skuNumber;
 
     try {
@@ -642,18 +643,21 @@ class MudiExperience {
   }
 
   /** Create Modal ✔️ */
-  createModalPLP(skuNumber, link, referenceColors,combination) {
+  createModalPLP(skuNumber, link, referenceColors, referenceSizes, combinations) {
+
+    console.log(combinations[0]);
+    console.log(referenceColors);
     let colorOptionsHTML = `
-    
-      <div id="colorSelect" class="color-buttons" style="display: flex; align-items: center; gap: 0.5rem; position: absolute; bottom: 33px; z-index: 1000;">
-    `;
   
+      <div id="colorSelect" class="color-buttons" style="display: flex; align-items: center; gap: 0.5rem; position: absolute; bottom: ${referenceSizes.length > 0 ? '80px' : '33px'}; z-index: 1000;">
+    `;
+
     /** Se agregan los colores como botones donde el valor es el sku */
     referenceColors.forEach((item) => {
       colorOptionsHTML += `
         <button 
           class="color-button" 
-          value="${item.sku}" 
+          value="${item.sku}"
           style="background-image: url(${item.textura}); background-size: cover; border: ${item.sku === skuNumber ? '2px solid black' : 'none'}; width: 40px; height: 40px; border-radius: 50%; flex: 0 0 40px;" 
           ${item.sku === skuNumber ? 'data-selected="true"' : ''}
         >
@@ -661,6 +665,27 @@ class MudiExperience {
       `;
     });
     colorOptionsHTML += "</div>";
+
+
+    let sizeOptionsHTML = `
+    
+      <div id="sizeSelect" class="size-buttons" style="display: flex; align-items: center; gap: 1.5rem; position: absolute; bottom:5px; z-index: 1000;">
+    `;
+
+    /** Se agregan las medidas */
+    referenceSizes.forEach((item) => {
+      sizeOptionsHTML += `
+        <button 
+          class="size-button" 
+          value="${item.sku}"
+          style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;"
+        >
+        ${item.medida}
+        </button>
+      `;
+    });
+    sizeOptionsHTML += "</div>";
+
     /** Crear variables */
     let flagAR = false;
 
@@ -673,6 +698,7 @@ class MudiExperience {
             <button class="closeModalMudi" style="color:${this.color}">X</button>
             <a class="goToSite3D" style="display:block" href="${link}">Ver más detalles</a>
             ${colorOptionsHTML}
+            ${sizeOptionsHTML}
             <iframe id="iframeMudi" class="modelMudi" src="https://viewer.mudi.com.co/v1/web/?id=147&sku=${skuNumber}"></iframe> 
             <div class="containerBtnsActions">
             <svg xmlns="http://www.w3.org/2000/svg" id="imgARBtn" class="imgBtnAR" viewBox="0 0 317 112">
@@ -742,35 +768,104 @@ class MudiExperience {
         </div>
     `;
 
-   /** Agregar event listener para el cambio de color */
-  const colorButtons = modalMudi.querySelectorAll(".color-button");
-  const iframeMudi = modalMudi.querySelector("#iframeMudi");
-  const qrMudi = modalMudi.querySelector('.mudiQR');
-  const verDetalles = modalMudi.querySelector('.goToSite3D');
-  
-  colorButtons.forEach(button => {
-    button.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const selectedSku = e.target.value;
-      const selectedIdOption = referenceColors.find(item => item.sku === selectedSku).idOption;
-      if (typeof link !== 'string') {
-        link = String(link);
-      }
-      const updatedLink = link.replace(/#\d+/, `#${selectedIdOption}`);
-      verDetalles.href = `${updatedLink}`
-  
-      // Actualizar el iframe y el QR con el nuevo SKU
-      iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
-      qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
-  
-      // Actualizar la apariencia del botón seleccionado
-      colorButtons.forEach(btn => btn.style.border = 'none');
-      e.target.style.border = '2px solid red';
-    });
-  });
-  
+    const colorButtons = modalMudi.querySelectorAll(".color-button");
+    const sizeButtons = modalMudi.querySelectorAll(".size-button");
+    const iframeMudi = modalMudi.querySelector("#iframeMudi");
+    const qrMudi = modalMudi.querySelector('.mudiQR');
+    const verDetalles = modalMudi.querySelector('.goToSite3D');
 
-    
+
+   /** Función auxiliar para validar y actualizar la URL */
+function actualizarLink(linkElement, combinations, referenceColors) {
+  if (linkElement instanceof HTMLAnchorElement) {
+
+    let link = linkElement.href;
+    let newIdOption = null;
+    let newOpValue = null;
+
+    for (let obj of combinations) {
+      let key = Object.keys(obj)[0]; 
+      let value = obj[key];      
+     
+      if (Number(key) === referenceColors) {
+        newIdOption = key; 
+        newOpValue = value; 
+        break; 
+      }
+    }
+    if (newIdOption && newOpValue) {
+      let updatedLink = link.replace(/#\d+/, `#${newIdOption}`);
+      updatedLink = updatedLink.replace(/op=\w+/, `op=${newOpValue}`);
+      return updatedLink;
+    } else {
+      console.log("No hay coincidencias con idOption");
+      return link; 
+    }
+  } else if (typeof linkElement === 'string') {
+    let link = linkElement;
+    let newIdOption = null;
+    let newOpValue = null;
+
+  
+    for (let obj of combinations) {
+      let key = Object.keys(obj)[0]; 
+      let value = obj[key];
+
+      if (Number(key) === referenceColors) {
+        newIdOption = key; 
+        newOpValue = value; 
+        break;
+      }
+    }
+
+    if (newIdOption && newOpValue) {
+      let updatedLink = link.replace(/#\d+/, `#${newIdOption}`);
+      updatedLink = updatedLink.replace(/op=\w+/, `op=${newOpValue}`);
+      return updatedLink;
+    } else {
+      console.log("No hay coincidencias con idOption");
+      return link; 
+    }
+  } else {
+    console.error('El valor de link no es válido:', linkElement);
+    return linkElement; 
+  }
+}
+
+    /** Event listeners para el cambio de color */
+    colorButtons.forEach(button => {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const selectedSku = e.target.value;
+        const selectedIdOption = referenceColors.find(item => item.sku === selectedSku).idOption;
+        const updatedLink = actualizarLink(link, combinations, selectedIdOption);
+
+        iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
+        qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
+
+        // Actualizar apariencia de botones
+        colorButtons.forEach(btn => btn.style.border = 'none');
+        e.target.style.border = '2px solid red';
+      });
+    });
+
+    /** Event listeners para el cambio de tamaño */
+    sizeButtons.forEach(button => {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const selectedSku = e.target.value;
+        const selectedIdOption = referenceSizes.find(item => item.sku === selectedSku).idOption;
+        const updatedLink = actualizarLink(link, combinations, selectedIdOption);
+
+        iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
+        qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
+
+        // Actualizar apariencia de botones
+        sizeButtons.forEach(btn => btn.style.border = 'none');
+        e.target.style.border = '2px solid red';
+      });
+    });
+
     /** Cerrar el modal */
     modalMudi.querySelector(".closeModalMudi").addEventListener("click", () => {
       if (document.body.contains(modalMudi)) {
@@ -793,22 +888,22 @@ class MudiExperience {
       } else {
         window.open(`https://viewer.mudi.com.co/v1/ar/?id=147&sku=${skuNumber}`, "_BLANK");
       }
-      flagAR && this.sendEventInteraction("AR");
+      flagAR && this.sendEventInteraction("3D categorias");
     });
 
-     /** Verify Style Bttn AR  */
-  function changeStyleBtnAR(flagAR, color) {
-    let icon = document.body.querySelectorAll(".cls-3_modal");
+    /** Verify Style Bttn AR  */
+    function changeStyleBtnAR(flagAR, color) {
+      let icon = document.body.querySelectorAll(".cls-3_modal");
 
-    flagAR
-      ? ((document.body.querySelector(".cls-1_modal").style.fill = color),
-        icon.forEach((icon) => (icon.style.fill = "white")),
-        (document.body.querySelector(".cls-2_modal").style.fill = "white"))
-      : ((document.body.querySelector(".cls-1_modal").style.fill = "white"),
-        icon.forEach((icon) => (icon.style.fill = color)),
-        (document.body.querySelector(".cls-2_modal").style.fill = color));
-  }
-    
+      flagAR
+        ? ((document.body.querySelector(".cls-1_modal").style.fill = color),
+          icon.forEach((icon) => (icon.style.fill = "white")),
+          (document.body.querySelector(".cls-2_modal").style.fill = "white"))
+        : ((document.body.querySelector(".cls-1_modal").style.fill = "white"),
+          icon.forEach((icon) => (icon.style.fill = color)),
+          (document.body.querySelector(".cls-2_modal").style.fill = color));
+    }
+
     document.body.appendChild(modalMudi);
   }
 
@@ -830,6 +925,7 @@ class MudiExperience {
                     <defs>
                         <style>
                         .cls-1_modal{fill:${this.color};stroke:${this.color};stroke-miterlimit:10;stroke-width:3px;}
+
                         .cls-2_modal{font-family:FrutigerBold, Frutiger;font-size:19.04px;fill:white}
                         .cls-3_modal{stroke-width:0px;fill:white;}
                         </style>
@@ -905,7 +1001,9 @@ class MudiExperience {
       document.body.querySelector("#modalMudi").remove();
     });
 
+
     /** Init ARExperience */
+
     modalMudi.querySelector(`#imgARBtn`).addEventListener("click", () => {
       if (window.innerWidth > 1000) {
         !flagAR
@@ -943,6 +1041,7 @@ class MudiExperience {
   createTooltip() {
     const tooltip = document.createElement("P");
     tooltip.classList.add("tooltipMudi");
+
     tooltip.innerHTML = `<b>¡Nuevo!</b> Descubre como se ve este producto en 3D y realidad aumentada en tu espacio`;
 
     setTimeout(() => {
@@ -1026,28 +1125,38 @@ const mudiExperience = new MudiExperience();
 setTimeout(() => {
   const btnCategory = document.querySelectorAll(".imgMundi.iconCatMudi_3D");
   const thumbnailDivs = document.querySelectorAll(".thumbnail-images");
+  const thumbnailSizeDivs = document.querySelectorAll(".droplist-size-mudi");
+  const thumbnailCombinationsDivs = document.querySelectorAll(".thumbnail");
 
   btnCategory.forEach((child, index) => {
-    child.removeEventListener('click', () => {});
+    child.removeEventListener('click', () => { });
     child.addEventListener("click", async (e) => {
       e.stopPropagation();
 
       const relatedThumbnailDiv = thumbnailDivs[index];
+      const relatedThumbnailSizeDiv = thumbnailSizeDivs[index];
+      const relatedthumbnailCombinationsDivs = thumbnailCombinationsDivs[index];
       const link = relatedThumbnailDiv.querySelector("a");
       const url = link ? link.getAttribute("href") : null;
       const inputColorMudi = relatedThumbnailDiv.querySelector("#referenceColorMudi");
-      const colorCombination = relatedThumbnailDiv.querySelector("#referenceCombinationsMudi")
-      
-      let colorsMudi = inputColorMudi ? JSON.parse(inputColorMudi.value) : [];      
-      let colorCombinations = colorCombination ? JSON.parse(colorCombination.value) : [];
-      console.log(colorCombinations);
+      const inputSizeMudi = relatedThumbnailSizeDiv.querySelector("#referenceSizeMudi");
+      const inputCombinationsMudi = relatedthumbnailCombinationsDivs.querySelector("#referenceCombinationsMudi");
+
+      let colorsMudi = inputColorMudi ? JSON.parse(inputColorMudi.value) : [];
+      let sizesMudi = inputSizeMudi ? JSON.parse(inputSizeMudi.value) : [];
+      let combinationsMudi = inputCombinationsMudi ? JSON.parse(inputCombinationsMudi.value) : [];
+
+      console.log(combinationsMudi);
+
       mudiExperience.createStyles();
       mudiExperience.createModalPLP(
         e.target.attributes.sku.value,
         link,
         colorsMudi,
-        colorCombinations
+        sizesMudi,
+        combinationsMudi
       );
     });
   });
 }, 2000);
+
