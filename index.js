@@ -123,7 +123,7 @@ class MudiExperience {
         <button 
           class="color-button" 
           value="${item.sku}"
-          style="background-image: url(${item.textura}); background-size: cover; border: ${item.sku === skuNumber ? '2px solid black' : 'none'}; width: 40px; height: 40px; border-radius: 50%; flex: 0 0 40px;" 
+          style="background-image: url(${item.textura}); background-size: cover; border: ${item.sku === skuNumber ? '2px solid red' : 'none'}; width: 40px; height: 40px; border-radius: 50%; flex: 0 0 40px;" 
           ${item.sku === skuNumber ? 'data-selected="true"' : ''}
         >
         </button>
