@@ -200,14 +200,14 @@
         bottom: 3%;
         text-decoration: none;
         right: 2%;
-        background-color: ##03457c;
+        background-color: #03457c;
         color: white;
         padding: 15px 18px;
         border-radius: 10px;
     transition: transform 0.3s ease; 
 }
 .goToSite3D:hover {
-    background-color: #1d4fa1;
+    background-color: #03457c;
     color: white;
      transform: scale(1.05);
 }
