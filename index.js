@@ -1,6 +1,5 @@
-
 /** Mudi Experience */
-class MudiExperience {
+class MudiExperienceTest {
   constructor() {
     this.color = "#03457c";
     this.dataSever = null;
@@ -109,12 +108,8 @@ class MudiExperience {
 
   /** Create Modal ✔️ */
   createModalPLP(skuNumber, link, referenceColors, referenceSizes, combinations) {
-
-    console.log(combinations[0]);
-    console.log(referenceColors);
     let colorOptionsHTML = `
-  
-      <div id="colorSelect" class="color-buttons" style="display: flex; align-items: center; gap: 0.5rem; position: absolute; bottom: ${referenceSizes.length > 0 ? '80px' : '33px'}; z-index: 1000;">
+      <div id="colorSelect" class="color-buttons" style="display:${referenceColors.length > 0 ? 'flex':'none'}; align-items: center; gap: 0.5rem; position: absolute; bottom: ${referenceColors.length > 0 ? '80px' : '33px'}; z-index: 1000;">
     `;
 
     /** Se agregan los colores como botones donde el valor es el sku */
@@ -143,7 +138,7 @@ class MudiExperience {
         <button 
           class="size-button" 
           value="${item.sku}"
-          style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;"
+          style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;}; "
         >
         ${item.medida}
         </button>
@@ -242,6 +237,7 @@ class MudiExperience {
 
    /** Función auxiliar para validar y actualizar la URL */
 function actualizarLink(linkElement, combinations, referenceColors) {
+
   if (linkElement instanceof HTMLAnchorElement) {
 
     let link = linkElement.href;
@@ -271,7 +267,6 @@ function actualizarLink(linkElement, combinations, referenceColors) {
     let newIdOption = null;
     let newOpValue = null;
 
-  
     for (let obj of combinations) {
       let key = Object.keys(obj)[0]; 
       let value = obj[key];
@@ -321,7 +316,8 @@ function actualizarLink(linkElement, combinations, referenceColors) {
         const selectedSku = e.target.value;
         const selectedIdOption = referenceSizes.find(item => item.sku === selectedSku).idOption;
         const updatedLink = actualizarLink(link, combinations, selectedIdOption);
-          verDetalles.href = updatedLink;
+        console.log(referenceSizes);
+        verDetalles.href = updatedLink;
         iframeMudi.src = `https://viewer.mudi.com.co/v1/web/?id=147&sku=${selectedSku}`;
         qrMudi.src = `https://viewer.mudi.com.co/v1/qr/?id=147&sku=${selectedSku}`;
 
@@ -585,7 +581,7 @@ function actualizarLink(linkElement, combinations, referenceColors) {
   }
 }
 
-const mudiExperience = new MudiExperience();
+const mudiExperienceTest = new MudiExperienceTest();
 
 setTimeout(() => {
   const btnCategory = document.querySelectorAll(".imgMundi.iconCatMudi_3D");
@@ -613,8 +609,8 @@ setTimeout(() => {
 
       console.log(combinationsMudi);
 
-      mudiExperience.createStyles();
-      mudiExperience.createModalPLP(
+      mudiExperienceTest.createStyles();
+      mudiExperienceTest.createModalPLP(
         e.target.attributes.sku.value,
         link,
         colorsMudi,
@@ -624,4 +620,3 @@ setTimeout(() => {
     });
   });
 }, 2000);
-
