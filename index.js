@@ -138,7 +138,7 @@ class MudiExperienceTest {
         <button 
           class="size-button" 
           value="${item.sku}"
-          style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px; border: ${item.sku === skuNumber ? '2px solid red' : 'none'}; "
+          style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;"
         >
         ${item.medida}
         </button>
