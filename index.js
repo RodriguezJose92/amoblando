@@ -387,28 +387,27 @@ class MudiExperience {
     /** create variables */
     let flagAR = false;
 
-    let colorsMudiHTML = `
-    
-    <div id="sizeSelect" class="size-buttons" style="display: flex; align-items: center; gap: 1.5rem; position: absolute; bottom:5px; z-index: 1000;">
+    let colorOptionsHTML = `
+    <div id="colorSelect" class="color-buttons" style="display:${colorsMudi.length > 0 ? 'flex' : 'none'}; align-items: center; gap: 0.5rem; position: absolute; bottom: ${colorsMudi.length > 0 ? '80px' : '33px'}; z-index: 1000;">
   `;
 
-    /** Se agregan las medidas */
-    colorsMudi.forEach((item) => {
-      colorsMudiHTML += `
+  /** Se agregan los colores como botones donde el valor es el sku */
+  colorsMudi.forEach((item) => {
+    colorOptionsHTML += `
       <button 
-        class="size-button" 
+        class="color-button" 
         value="${item.sku}"
-        style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;  "
+        style="background-image: url(${item.textura}); background-size: cover; border: ${item.sku === skuNumber ? '2px solid red' : 'none'}; width: 40px; height: 40px; border-radius: 50%; flex: 0 0 40px;" 
+        ${item.sku === skuNumber ? 'data-selected="true"' : ''}
       >
-      ${item.medida}
       </button>
     `;
-    });
-    colorsMudiHTML += "</div>";
+  });
+  colorOptionsHTML += "</div>";
 
     let sizeOptionsHTML = `
     
-    <div id="sizeSelect" class="size-buttons" style="display: flex; align-items: center; gap: 1.5rem; position: absolute; bottom:5px; z-index: 1000;">
+    <div id="sizeSelect" class="size-buttons" style="display:${sizeMudi.length > 0 ? 'flex' : 'none'}; align-items: center; gap: 1.5rem; position: absolute; bottom:5px; z-index: 1000;">
   `;
 
     /** Se agregan las medidas */
@@ -432,6 +431,7 @@ class MudiExperience {
     modalMudi.innerHTML = `
             <div class="iframeMudi3D">
                 <button class="closeModalMudi" style="color:${this.color}">X</button>
+                         ${colorOptionsHTML}
                          ${sizeOptionsHTML}
                 <iframe class="modelMudi" src="${this.dataServer.URL_WEB}"></iframe>
                 <div class="containerBtnsActions">
