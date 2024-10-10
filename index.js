@@ -103,7 +103,7 @@ class MudiExperience {
       let colorsMudi = referenceColorMudi ? JSON.parse(referenceColorMudi.value) : [];
       console.log("Entrando");
 
-      this.createModal(colorsMudi, sizeMudi );
+      this.createModal(this.skuNumber,colorsMudi, sizeMudi );
 
       /** GTM */
       this.sendEventInteraction("3D");
@@ -380,7 +380,7 @@ class MudiExperience {
   }
 
   /** Create Modal ✔️ */
-  createModal(referenceColors, referenceSizes) {
+  createModal(skuNumber,referenceColors, referenceSizes) {
 
     console.log(colorsMudi);
 
