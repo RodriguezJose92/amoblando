@@ -99,7 +99,7 @@ class MudiExperience {
       let referenceSizesMudi = document.querySelector('#referenceSizeMudi');
       let sizeMudi = referenceSizesMudi ? JSON.parse(referenceSizesMudi.value) : [];
 
-      let referenceColorMudi = document.querySelector('#referenceSizeMudi');
+      let referenceColorMudi = document.querySelector('#referenceColorMudi');
       let colorsMudi = referenceColorMudi ? JSON.parse(referenceColorMudi.value) : [];
       console.log("Entrando");
       
