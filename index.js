@@ -382,7 +382,8 @@ class MudiExperience {
   /** Create Modal ✔️ */
   createModal(skuNumber,referenceColors, referenceSizes) {
 
-    console.log(colorsMudi);
+    console.log(referenceColors);
+     console.log(referenceSizes);
 
     /** create variables */
     let flagAR = false;
