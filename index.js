@@ -95,8 +95,16 @@ class MudiExperience {
         `;
 
     containerBtns.querySelector("#img3DBtn").addEventListener("click", () => {
-      this.createModal();
+
+      let referenceSizesMudi = document.querySelector('#referenceSizeMudi');
+      let sizeMudi = referenceSizesMudi ? JSON.parse(referenceSizesMudi.value) : [];
+
+      let referenceColorMudi = document.querySelector('#referenceSizeMudi');
+      let colorsMudi = referenceColorMudi ? JSON.parse(referenceColorMudi.value) : [];
+      console.log("Entrando");
       
+      this.createModal(sizeMudi, colorsMudi);
+
       /** GTM */
       this.sendEventInteraction("3D");
     });
@@ -110,7 +118,7 @@ class MudiExperience {
   /** Create Modal ✔️ */
   createModalPLP(skuNumber, link, referenceColors, referenceSizes, combinations) {
     let colorOptionsHTML = `
-      <div id="colorSelect" class="color-buttons" style="display:${referenceColors.length > 0 ? 'flex':'none'}; align-items: center; gap: 0.5rem; position: absolute; bottom: ${referenceColors.length > 0 ? '80px' : '33px'}; z-index: 1000;">
+      <div id="colorSelect" class="color-buttons" style="display:${referenceColors.length > 0 ? 'flex' : 'none'}; align-items: center; gap: 0.5rem; position: absolute; bottom: ${referenceColors.length > 0 ? '80px' : '33px'}; z-index: 1000;">
     `;
 
     /** Se agregan los colores como botones donde el valor es el sku */
@@ -136,7 +144,7 @@ class MudiExperience {
     /** Se agregan las medidas */
     referenceSizes.forEach((item) => {
       console.log(item.sku);
-      
+
       sizeOptionsHTML += `
         <button 
           class="size-button" 
@@ -238,62 +246,62 @@ class MudiExperience {
     const verDetalles = modalMudi.querySelector('.goToSite3D');
 
 
-   /** Función auxiliar para validar y actualizar la URL */
-function actualizarLink(linkElement, combinations, referenceColors) {
+    /** Función auxiliar para validar y actualizar la URL */
+    function actualizarLink(linkElement, combinations, referenceColors) {
 
-  if (linkElement instanceof HTMLAnchorElement) {
+      if (linkElement instanceof HTMLAnchorElement) {
 
-    let link = linkElement.href;
-    let newIdOption = null;
-    let newOpValue = null;
+        let link = linkElement.href;
+        let newIdOption = null;
+        let newOpValue = null;
 
-    for (let obj of combinations) {
-      let key = Object.keys(obj)[0]; 
-      let value = obj[key];      
-     
-      if (Number(key) === referenceColors) {
-        newIdOption = key; 
-        newOpValue = value; 
-        break; 
+        for (let obj of combinations) {
+          let key = Object.keys(obj)[0];
+          let value = obj[key];
+
+          if (Number(key) === referenceColors) {
+            newIdOption = key;
+            newOpValue = value;
+            break;
+          }
+        }
+        if (newIdOption && newOpValue) {
+          let updatedLink = link.replace(/#\d+/, `#${newIdOption}`);
+          updatedLink = updatedLink.replace(/op=\w+/, `op=${newOpValue}`);
+          return updatedLink;
+        } else {
+          console.log("No hay coincidencias con idOption");
+          return link;
+        }
+      } else if (typeof linkElement === 'string') {
+        let link = linkElement;
+        let newIdOption = null;
+        let newOpValue = null;
+
+        for (let obj of combinations) {
+          let key = Object.keys(obj)[0];
+          let value = obj[key];
+
+          if (Number(key) === referenceColors) {
+            newIdOption = key;
+            newOpValue = value;
+            break;
+          }
+        }
+
+        if (newIdOption && newOpValue) {
+          let updatedLink = link.replace(/#\d+/, `#${newIdOption}`);
+          updatedLink = updatedLink.replace(/op=\w+/, `op=${newOpValue}`);
+          return updatedLink;
+        } else {
+          console.log("No hay coincidencias con idOption");
+          return link;
+        }
+      } else {
+        console.error('El valor de link no es válido:', linkElement);
+        return linkElement;
       }
     }
-    if (newIdOption && newOpValue) {
-      let updatedLink = link.replace(/#\d+/, `#${newIdOption}`);
-      updatedLink = updatedLink.replace(/op=\w+/, `op=${newOpValue}`);
-      return updatedLink;
-    } else {
-      console.log("No hay coincidencias con idOption");
-      return link; 
-    }
-  } else if (typeof linkElement === 'string') {
-    let link = linkElement;
-    let newIdOption = null;
-    let newOpValue = null;
-
-    for (let obj of combinations) {
-      let key = Object.keys(obj)[0]; 
-      let value = obj[key];
-
-      if (Number(key) === referenceColors) {
-        newIdOption = key; 
-        newOpValue = value; 
-        break;
-      }
-    }
-
-    if (newIdOption && newOpValue) {
-      let updatedLink = link.replace(/#\d+/, `#${newIdOption}`);
-      updatedLink = updatedLink.replace(/op=\w+/, `op=${newOpValue}`);
-      return updatedLink;
-    } else {
-      console.log("No hay coincidencias con idOption");
-      return link; 
-    }
-  } else {
-    console.error('El valor de link no es válido:', linkElement);
-    return linkElement; 
-  }
-}
 
     /** Event listeners para el cambio de color */
     colorButtons.forEach(button => {
@@ -372,24 +380,21 @@ function actualizarLink(linkElement, combinations, referenceColors) {
   }
 
   /** Create Modal ✔️ */
-  createModal() {
+  createModal(colorsMudi, sizeMudi) {
+
+    console.log(colorsMudi);
+
     /** create variables */
     let flagAR = false;
-    
-    let referenceSizesMudi = document.querySelector('#referenceSizeMudi');
-    let sizeMudi = referenceSizesMudi ? JSON.parse(referenceSizesMudi.value) : [];
-
-    let referenceColorMudi = document.querySelector('#referenceSizeMudi');
-    let colorsMudi = referenceColorMudi ? JSON.parse(referenceColorMudi.value) : [];
 
     let colorsMudiHTML = `
     
     <div id="sizeSelect" class="size-buttons" style="display: flex; align-items: center; gap: 1.5rem; position: absolute; bottom:5px; z-index: 1000;">
   `;
 
-  /** Se agregan las medidas */
-  colorsMudi.forEach((item) => {  
-    colorsMudiHTML += `
+    /** Se agregan las medidas */
+    colorsMudi.forEach((item) => {
+      colorsMudiHTML += `
       <button 
         class="size-button" 
         value="${item.sku}"
@@ -398,17 +403,17 @@ function actualizarLink(linkElement, combinations, referenceColors) {
       ${item.medida}
       </button>
     `;
-  });
-  colorsMudiHTML += "</div>";
+    });
+    colorsMudiHTML += "</div>";
 
     let sizeOptionsHTML = `
     
     <div id="sizeSelect" class="size-buttons" style="display: flex; align-items: center; gap: 1.5rem; position: absolute; bottom:5px; z-index: 1000;">
   `;
 
-  /** Se agregan las medidas */
-  sizeMudi.forEach((item) => {  
-    sizeOptionsHTML += `
+    /** Se agregan las medidas */
+    sizeMudi.forEach((item) => {
+      sizeOptionsHTML += `
       <button 
         class="size-button" 
         value="${item.sku}"
@@ -417,8 +422,8 @@ function actualizarLink(linkElement, combinations, referenceColors) {
       ${item.medida}
       </button>
     `;
-  });
-  sizeOptionsHTML += "</div>";
+    });
+    sizeOptionsHTML += "</div>";
 
     /** We create a shell for the MUDI modal */
     const modalMudi = document.createElement("DIV");
