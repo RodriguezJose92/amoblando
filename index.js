@@ -96,6 +96,7 @@ class MudiExperience {
 
     containerBtns.querySelector("#img3DBtn").addEventListener("click", () => {
       this.createModal();
+      
       /** GTM */
       this.sendEventInteraction("3D");
     });
@@ -134,11 +135,13 @@ class MudiExperience {
 
     /** Se agregan las medidas */
     referenceSizes.forEach((item) => {
+      console.log(item.sku);
+      
       sizeOptionsHTML += `
         <button 
           class="size-button" 
           value="${item.sku}"
-          style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;"
+          style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;  "
         >
         ${item.medida}
         </button>
@@ -372,6 +375,50 @@ function actualizarLink(linkElement, combinations, referenceColors) {
   createModal() {
     /** create variables */
     let flagAR = false;
+    
+    let referenceSizesMudi = document.querySelector('#referenceSizeMudi');
+    let sizeMudi = referenceSizesMudi ? JSON.parse(referenceSizesMudi.value) : [];
+
+    let referenceColorMudi = document.querySelector('#referenceSizeMudi');
+    let colorsMudi = referenceColorMudi ? JSON.parse(referenceColorMudi.value) : [];
+
+    let colorsMudiHTML = `
+    
+    <div id="sizeSelect" class="size-buttons" style="display: flex; align-items: center; gap: 1.5rem; position: absolute; bottom:5px; z-index: 1000;">
+  `;
+
+  /** Se agregan las medidas */
+  colorsMudi.forEach((item) => {  
+    colorsMudiHTML += `
+      <button 
+        class="size-button" 
+        value="${item.sku}"
+        style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;  "
+      >
+      ${item.medida}
+      </button>
+    `;
+  });
+  colorsMudiHTML += "</div>";
+
+    let sizeOptionsHTML = `
+    
+    <div id="sizeSelect" class="size-buttons" style="display: flex; align-items: center; gap: 1.5rem; position: absolute; bottom:5px; z-index: 1000;">
+  `;
+
+  /** Se agregan las medidas */
+  sizeMudi.forEach((item) => {  
+    sizeOptionsHTML += `
+      <button 
+        class="size-button" 
+        value="${item.sku}"
+        style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;  "
+      >
+      ${item.medida}
+      </button>
+    `;
+  });
+  sizeOptionsHTML += "</div>";
 
     /** We create a shell for the MUDI modal */
     const modalMudi = document.createElement("DIV");
@@ -380,6 +427,7 @@ function actualizarLink(linkElement, combinations, referenceColors) {
     modalMudi.innerHTML = `
             <div class="iframeMudi3D">
                 <button class="closeModalMudi" style="color:${this.color}">X</button>
+                         ${sizeOptionsHTML}
                 <iframe class="modelMudi" src="${this.dataServer.URL_WEB}"></iframe>
                 <div class="containerBtnsActions">
                     <svg xmlns="http://www.w3.org/2000/svg" id="imgARBtn" class="imgBtnAR" viewBox="0 0 317 112">
