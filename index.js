@@ -102,8 +102,8 @@ class MudiExperience {
       let referenceColorMudi = document.querySelector('#referenceColorMudi');
       let colorsMudi = referenceColorMudi ? JSON.parse(referenceColorMudi.value) : [];
       console.log("Entrando");
-      
-      this.createModal(sizeMudi, colorsMudi);
+
+      this.createModal(colorsMudi, sizeMudi );
 
       /** GTM */
       this.sendEventInteraction("3D");
@@ -380,7 +380,7 @@ class MudiExperience {
   }
 
   /** Create Modal ✔️ */
-  createModal(colorsMudi, sizeMudi) {
+  createModal(referenceColors, referenceSizes) {
 
     console.log(colorsMudi);
 
@@ -388,12 +388,12 @@ class MudiExperience {
     let flagAR = false;
 
     let colorOptionsHTML = `
-    <div id="colorSelect" class="color-buttons" style="display:${colorsMudi.length > 0 ? 'flex' : 'none'}; align-items: center; gap: 0.5rem; position: absolute; bottom: ${colorsMudi.length > 0 ? '80px' : '33px'}; z-index: 1000;">
+    <div id="colorSelect" class="color-buttons" style="display:${referenceColors.length > 0 ? 'flex' : 'none'}; align-items: center; gap: 0.5rem; position: absolute; bottom: ${referenceColors.length > 0 ? '80px' : '33px'}; z-index: 1000;">
   `;
 
-  /** Se agregan los colores como botones donde el valor es el sku */
-  colorsMudi.forEach((item) => {
-    colorOptionsHTML += `
+    /** Se agregan los colores como botones donde el valor es el sku */
+    referenceColors.forEach((item) => {
+      colorOptionsHTML += `
       <button 
         class="color-button" 
         value="${item.sku}"
@@ -402,25 +402,26 @@ class MudiExperience {
       >
       </button>
     `;
-  });
-  colorOptionsHTML += "</div>";
+    });
+    colorOptionsHTML += "</div>";
 
-    let sizeOptionsHTML = `
-    
-    <div id="sizeSelect" class="size-buttons" style="display:${sizeMudi.length > 0 ? 'flex' : 'none'}; align-items: center; gap: 1.5rem; position: absolute; bottom:5px; z-index: 1000;">
-  `;
+    let sizeOptionsHTML = `   
+  <div id="sizeSelect" class="size-buttons" style="style="display:${referenceSizes.length > 0 ? 'flex' : 'none'}; align-items: center; gap: 1.5rem; position: absolute; bottom:5px; z-index: 1000;">
+`;
 
     /** Se agregan las medidas */
-    sizeMudi.forEach((item) => {
+    referenceSizes.forEach((item) => {
+      console.log(item.sku);
+
       sizeOptionsHTML += `
-      <button 
-        class="size-button" 
-        value="${item.sku}"
-        style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;  "
-      >
-      ${item.medida}
-      </button>
-    `;
+    <button 
+      class="size-button" 
+      value="${item.sku}"
+      style="font-size: 1rem; background-size: cover; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; flex: 0 0 60px;  "
+    >
+    ${item.medida}
+    </button>
+  `;
     });
     sizeOptionsHTML += "</div>";
 
