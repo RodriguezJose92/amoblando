@@ -431,7 +431,7 @@ class MudiExperience {
     modalMudi.innerHTML = `
             <div class="iframeMudi3D">
                 <button class="closeModalMudi" style="color:${this.color}">X</button>
-                       <!-- ${colorOptionsHTML} -->
+                       <!-- ${/* colorOptionsHTML */ ''} -->
                          ${sizeOptionsHTML}
                 <iframe class="modelMudi" src="${this.dataServer.URL_WEB}"></iframe>
                 <div class="containerBtnsActions">
