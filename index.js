@@ -431,8 +431,9 @@ class MudiExperience {
     modalMudi.innerHTML = `
             <div class="iframeMudi3D">
                 <button class="closeModalMudi" style="color:${this.color}">X</button>
-                       <!-- ${/* colorOptionsHTML */ ''} -->
-                         ${sizeOptionsHTML}
+                       <!-- ${/* ${colorOptionsHTML} */ ''} -->
+                         <!-- ${/* ${sizeOptionsHTML} */ ''} -->
+                      
                 <iframe class="modelMudi" src="${this.dataServer.URL_WEB}"></iframe>
                 <div class="containerBtnsActions">
                     <svg xmlns="http://www.w3.org/2000/svg" id="imgARBtn" class="imgBtnAR" viewBox="0 0 317 112">
